@@ -8,8 +8,7 @@ services:
       - .:/app
       - static_volume:/app/staticfiles
       - media_volume:/app/media
-    env_file:
-      - myenv
+
     depends_on:
       - db
 

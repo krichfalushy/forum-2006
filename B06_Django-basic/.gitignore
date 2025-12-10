@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Віртуальні середовища
+venv/
+myenv/
+env/
+.env
+
+# База даних (Docker volumes та локальні файли)
+db.sqlite3
+*.sql
+mysql_data/
+
+# OS
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
