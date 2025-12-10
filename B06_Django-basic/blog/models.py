@@ -2,6 +2,7 @@ from django.db import models
 
 # Create your models here.
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Category(models.Model):
@@ -23,13 +24,16 @@ class Tag(models.Model):
 
 class Article(models.Model):
     title = models.CharField(max_length=255)
-    author = models.CharField(max_length=255)  # Реалізовано як рядок [cite: 201]
     text = models.TextField()
-    image = models.CharField(max_length=255, help_text="Image URL")  # [cite: 169, 200]
+
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='articles')
+    author_name = models.CharField(max_length=255, default="Anonymous")
+
+    image = models.CharField(max_length=255, help_text="Image URL")
     publication_date = models.DateField()
     is_published = models.BooleanField(default=False)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)  # [cite: 182]
-    tags = models.ManyToManyField(Tag) # [cite: 183]
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    tags = models.ManyToManyField(Tag)
 
     def __str__(self):
         return self.title
@@ -40,6 +44,9 @@ class Comment(models.Model):
     author = models.CharField(max_length=255)
     publication_date = models.DateField(auto_now_add=True)
     article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='comments')  # [cite: 197]
+
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    author_name = models.CharField(max_length=255, blank=True)
 
     def __str__(self):
         return f"Comment by {self.author}"
