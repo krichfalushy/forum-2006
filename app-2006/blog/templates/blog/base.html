@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Base Page</title>
+</head>
+<body>
+    <header style="padding: 10px; background: #f4f4f4; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between;">
+    <div>
+        <a href="{% url 'home' %}" style="font-weight: bold; text-decoration: none; color: black;">Мій Блог</a>
+        | <a href="{% url 'category_list' %}">Категорії</a>
+    </div>
+
+    <div>
+        {% if user.is_authenticated %}
+            <span style="color: green;">Привіт, <b>{{ user.username }}</b>!</span>
+
+            <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" style="cursor: pointer;">Вийти</button>
+            </form>
+        {% else %}
+            <a href="{% url 'login' %}">Вхід</a> |
+            <a href="{% url 'signup' %}">Реєстрація</a>
+        {% endif %}
+    </div>
+</header>
+    {% block content %}
+    {% endblock %}
+
+</body>
+</html>

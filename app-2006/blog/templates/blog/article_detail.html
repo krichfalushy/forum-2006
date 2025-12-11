@@ -1,0 +1,23 @@
+<h3>Коментарі</h3>
+{% for comment in comments %}
+    <div class="comment">
+        <p><strong>{{ comment.author_name }}</strong> ({{ comment.publication_date }}):</p>
+        <p>{{ comment.text }}</p>
+
+        {% if user.is_authenticated %}
+            {% if comment.user == user %}
+                <a href="{% url 'edit_comment' comment.pk %}">Редагувати</a>
+                <a href="{% url 'delete_comment' comment.pk %}">Видалити</a>
+            {% elif user.groups.all.0.name == "Moderator" %} <a href="{% url 'delete_comment' comment.pk %}">Видалити (Mod)</a>
+            {% endif %}
+        {% endif %}
+        <hr>
+    </div>
+{% endfor %}
+
+<h3>Залишити коментар</h3>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Надіслати</button>
+</form>
